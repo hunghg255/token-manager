@@ -241,20 +241,17 @@ video {
 <style>
 
 :root {
-  --background: #050505;
+  --background: #000000ed;
   --primary: #fff;
   --secondary: #ccc;
   --tertiary: #7d7d7d;
   --accent: #f09000;
   --red: #fc533e;
-  --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, 'andale mono',
-    monospace !important;
   --highlight-color: #f25f4c;
 }
 
 * {
   box-sizing: border-box;
-  font-family: var(--font-mono);
 }
 
 a {
@@ -275,6 +272,17 @@ body {
   font-synthesis: style;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  font-family: -apple-system,
+  BlinkMacSystemFont,
+  Segoe UI,
+  Roboto,
+  Helvetica Neue,
+  Arial,
+  sans-serif,
+  Apple Color Emoji,
+  Segoe UI Emoji,
+  Segoe UI Symbol,
+  Noto Color Emoji;
 }
 
 ::-webkit-scrollbar {
@@ -637,6 +645,22 @@ body {
   display: flex;
   flex-direction: column;
   padding: 8px 12px !important;
+  line-height: var(--vp-code-line-height);
+}
+
+.twoslash-popup-docs.twoslash-popup-docs code {
+  color: #8cccd5;
+  border-radius: 4px;
+  padding: 3px 6px;
+  background-color: rgba(101, 117, 133, 0.16);
+  transition:
+    color 0.25s,
+    background-color 0.5s;
+}
+
+.twoslash-popup-docs.twoslash-popup-docs a {
+  color: #8cccd5;
+  text-decoration: underline;
 }
 
 .twoslash-floating.twoslash-floating .twoslash-popup-docs-tags .twoslash-popup-docs-tag-name {
@@ -907,9 +931,13 @@ hyphens: none; */
   h5 code,
   p code,
   ul code {
-    background: #343434 !important;
+    color: #8cccd5;
     border-radius: 4px;
-    padding: 4px;
+    padding: 3px 6px;
+    background-color: rgba(101, 117, 133, 0.16);
+    transition:
+      color 0.25s,
+      background-color 0.5s;
   }
 
   details {

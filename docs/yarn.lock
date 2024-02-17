@@ -130,10 +130,10 @@ commander@^4.0.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-4.1.1.tgz#9fd602bd936294e9e9ef46a3f4d6964044b18068"
   integrity sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==
 
-convert-markdown-to-html@^0.0.20:
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/convert-markdown-to-html/-/convert-markdown-to-html-0.0.20.tgz#23cbe0ee26e89fc04cdaaf2c36390c8308c2008f"
-  integrity sha512-luLiWyTddnlxxxOR/ps0OrZeXqHqkRpLz9Yw23ubaFp42oXpSps3optbfUDLsaprIqISJC9+P3NsStOOxZPi8g==
+convert-markdown-to-html@^0.0.22:
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/convert-markdown-to-html/-/convert-markdown-to-html-0.0.22.tgz#7b7b8c7479ec26b07d1bfaf48a12b8f6bcb04dc4"
+  integrity sha512-9roOv3whBkatj3TXRbKa8l6+29v/a+qAvf9P7IA12isCLiM7q88ViO9CRTmtPhzNrnHCV6BcBu4DasUcfiEBHg==
   dependencies:
     shikiji-themes "^0.0.2"
     unreadconfig "^0.0.13"
