@@ -1,0 +1,1495 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainless Token Manager Documentation</title>
+
+  <style>
+  html,
+  body,
+  div,
+  span,
+  applet,
+  object,
+  iframe,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  blockquote,
+  pre,
+  a,
+  abbr,
+  acronym,
+  address,
+  big,
+  cite,
+  code,
+  del,
+  dfn,
+  em,
+  img,
+  ins,
+  kbd,
+  q,
+  s,
+  samp,
+  small,
+  strike,
+  strong,
+  sub,
+  sup,
+  tt,
+  var,
+  b,
+  u,
+  i,
+  center,
+  dl,
+  dt,
+  dd,
+  ol,
+  ul,
+  li,
+  fieldset,
+  form,
+  label,
+  legend,
+  table,
+  caption,
+  tbody,
+  tfoot,
+  thead,
+  tr,
+  th,
+  td,
+  article,
+  aside,
+  canvas,
+  details,
+  embed,
+  figure,
+  figcaption,
+  footer,
+  header,
+  hgroup,
+  menu,
+  nav,
+  output,
+  ruby,
+  section,
+  summary,
+  time,
+  mark,
+  audio,
+  video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+  }
+
+  /* HTML5 display-role reset for older browsers */
+  article,
+  aside,
+  details,
+  figcaption,
+  figure,
+  footer,
+  header,
+  hgroup,
+  menu,
+  nav,
+  section {
+    display: block;
+  }
+
+  body {
+    line-height: 1;
+  }
+
+  ol,
+  ul {
+    padding: 0 26px;
+  }
+
+  blockquote,
+  q {
+    quotes: none;
+  }
+
+  blockquote:before,
+  blockquote:after,
+  q:before,
+  q:after {
+    content: '';
+    content: none;
+  }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+  a {
+  display: inline-block;
+  }
+  a,
+  a:hover,
+  a:active,
+  a:focus {
+    color: inherit;
+  }
+  img,
+video {
+  width: 100%;
+  height: auto;
+}
+
+</style>
+
+<style>
+  .has-diff {
+    position: relative;
+  }
+
+  .has-diff .line {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .has-diff .diff {
+    margin: 0 -24px;
+    padding: 0 24px;
+    width: calc(100% + 48px);
+    display: inline-block;
+  }
+
+  .has-diff code .line:last-child {
+    display: none;
+  }
+
+  .has-diff .diff.add {
+    background-color: #0505;
+  }
+
+  .has-diff .diff.remove {
+    background-color: #8005;
+  }
+
+  .has-diff .diff:before {
+    position: absolute;
+    left: 0;
+    padding-left: 6px;
+  }
+
+  .has-diff .diff.add:before {
+    content: '+';
+    color: #3dd68c;
+    border-left: 1px solid #10b981;
+  }
+
+  .has-diff .diff.remove:before {
+    content: '-';
+    color: #cb7676;
+    border-left: 1px solid #f43f5e;
+  }
+
+  .has-highlighted .line.highlighted {
+    background-color: rgba(101, 117, 133, 0.16);
+    margin: 0 -24px;
+    padding: 0 24px;
+    width: calc(100% + 48px);
+    display: inline-block;
+  }
+
+  .has-highlighted .line.highlighted.error {
+    background-color: rgba(244, 63, 94, 0.16);
+  }
+
+  .has-highlighted .line.highlighted.warning {
+    background-color: rgba(234, 179, 8, 0.16);
+  }
+
+  .has-focused .line:not(.focused) {
+    filter: blur(0.095rem);
+    opacity: 0.4;
+    transition:
+      filter 0.35s,
+      opacity 0.35s;
+  }
+
+  .has-focused:hover .line:not(.focused) {
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  .highlighted-word {
+    background-color: #202127;
+    border: 1px solid #3c3f44;
+    padding: 1px 3px;
+    margin: -1px -3px;
+    border-radius: 4px;
+  }
+</style>
+
+<style>
+
+:root {
+  --background: #050505;
+  --primary: #fff;
+  --secondary: #ccc;
+  --tertiary: #7d7d7d;
+  --accent: #f09000;
+  --red: #fc533e;
+  --font-mono: ui-monospace, 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, 'andale mono',
+    monospace !important;
+  --highlight-color: #f25f4c;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: var(--font-mono);
+}
+
+a {
+  color: var(--accent);
+}
+
+a:hover {
+  color: var(--highlight-color);
+}
+
+body {
+  margin: 0;
+  background-color: var(--background);
+  color: var(--primary);
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 400;
+  font-synthesis: style;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #492c00b3;
+  border-radius: 4px;
+  transition: all 300ms ease-in-out;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+  transition: all 300ms;
+}
+
+</style>
+
+<style>
+/* ===== Basic ===== */
+:root {
+  --twoslash-border-color: #8888885d;
+  --twoslash-jsdoc-color: #fff;
+  --twoslash-underline-color: currentColor;
+  --twoslash-popup-bg: #0f0f0f;
+  --twoslash-popup-shadow: rgba(0, 0, 0, 0.08) 0px 1px 4px;
+  --twoslash-matched-color: #8cccd5;
+  --twoslash-unmatched-color: #888;
+  --twoslash-cursor-color: #8cccd5;
+  --twoslash-error-color: #d45656;
+  --twoslash-error-bg: #d4565620;
+  --twoslash-tag-color: #3772cf;
+  --twoslash-tag-bg: #3772cf20;
+  --twoslash-tag-warn-color: #c37d0d;
+  --twoslash-tag-warn-bg: #c37d0d20;
+  --twoslash-tag-annotate-color: #1ba673;
+  --twoslash-tag-annotate-bg: #1ba67320;
+  --twoslash-code-font: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  --twoslash-unmatched-color: rgba(235, 235, 245, 0.6);
+  --twoslash-docs-color: rgba(255, 255, 245, 0.86);
+}
+
+/* Respect people's wishes to not have animations */
+@media (prefers-reduced-motion: reduce) {
+  .twoslash * {
+    transition: none !important;
+  }
+}
+
+/* ===== Hover Info ===== */
+.twoslash:hover .twoslash-hover {
+  border-color: var(--twoslash-underline-color);
+}
+
+.twoslash .twoslash-hover {
+  border-bottom: 1px dotted transparent;
+  transition-timing-function: ease;
+  transition: border-color 0.3s;
+  position: relative;
+}
+
+.twoslash .twoslash-popup-container {
+  /* position: absolute;
+  top: 2px;
+  opacity: 0; */
+  display: inline-block;
+  /* transform: translateY(1.1em); */
+  background: var(--twoslash-popup-bg);
+  border: 1px solid var(--twoslash-border-color);
+  transition: opacity 0.3s;
+  border-radius: 4px;
+  padding: 4px 6px;
+  pointer-events: none;
+  z-index: 10;
+  user-select: none;
+  text-align: left;
+  box-shadow: var(--twoslash-popup-shadow);
+
+  /* position: fixed; */
+  width: max-content;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  max-width: 600px;
+  white-space: pre-wrap;
+}
+
+.twoslash .twoslash-query-presisted .twoslash-popup-container {
+  z-index: 9;
+  /* transform: translateY(1.5em); */
+}
+
+.twoslash .twoslash-hover:hover .twoslash-popup-container,
+.twoslash .twoslash-query-presisted .twoslash-popup-container {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.twoslash .twoslash-popup-container:hover {
+  user-select: auto;
+}
+
+.twoslash .twoslash-popup-arrow {
+  position: absolute;
+  top: -4px;
+  left: 1em;
+  border-top: 1px solid var(--twoslash-border-color);
+  border-right: 1px solid var(--twoslash-border-color);
+  background: var(--twoslash-popup-bg);
+  transform: rotate(-45deg);
+  width: 6px;
+  height: 6px;
+  pointer-events: none;
+}
+
+.twoslash .twoslash-popup-docs {
+  color: var(--twoslash-jsdoc-color);
+  padding: 6px 10px;
+  font-family: sans-serif;
+  font-size: 0.8em;
+  margin: 0 -6px;
+  border-top: 1px solid var(--twoslash-border-color);
+}
+
+.twoslash.twoslash h1,
+.twoslash.twoslash h2,
+.twoslash.twoslash h3,
+.twoslash.twoslash h4,
+.twoslash.twoslash h5,
+.twoslash.twoslash h6,
+.twoslash.twoslash p {
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  font-family: inherit;
+}
+
+.twoslash.twoslash a:hover {
+  background-color: initial !important;
+}
+
+/* ===== Error Line ===== */
+.twoslash .twoslash-error-line {
+  position: relative;
+  background-color: var(--twoslash-error-bg);
+  border-left: 3px solid var(--twoslash-error-color);
+  color: var(--twoslash-error-color);
+  padding: 6px 6px;
+  margin: 0.2em 0;
+}
+
+.twoslash .twoslash-error {
+  background: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%206%203'%20enable-background%3D'new%200%200%206%203'%20height%3D'3'%20width%3D'6'%3E%3Cg%20fill%3D'%23c94824'%3E%3Cpolygon%20points%3D'5.5%2C0%202.5%2C3%201.1%2C3%204.1%2C0'%2F%3E%3Cpolygon%20points%3D'4%2C0%206%2C2%206%2C0.6%205.4%2C0'%2F%3E%3Cpolygon%20points%3D'0%2C2%201%2C3%202.4%2C3%200%2C0.6'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E")
+    repeat-x bottom left;
+  padding-bottom: 2px;
+}
+
+/* ===== Completeions ===== */
+.twoslash .twoslash-completion-cursor {
+  position: relative;
+}
+
+.twoslash .twoslash-completion-list {
+  /* user-select: none; */
+  /* position: absolute;
+  top: 0;
+  left: 0; */
+  /* transform: translate(0, 1.2em); */
+  display: inline-block;
+  width: 240px;
+  background: var(--twoslash-popup-bg);
+  border: 1px solid var(--twoslash-border-color);
+  font-size: 0.8rem;
+  margin: 3px 0 0 -1px;
+  padding: 4px;
+  z-index: 8;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: var(--twoslash-popup-shadow);
+
+  /* position: fixed; */
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  /* max-width: 600px; */
+  white-space: pre-wrap;
+}
+
+/* Custom Tags */
+.twoslash .twoslash-tag-line {
+  position: relative;
+  background-color: var(--twoslash-tag-bg);
+  border-left: 3px solid var(--twoslash-tag-color);
+  color: var(--twoslash-tag-color);
+  padding: 6px 6px;
+  margin: 0.2em 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.twoslash .twoslash-tag-line .twoslash-tag-icon {
+  width: 1.1em;
+  color: inherit;
+  display: flex;
+}
+.twoslash .twoslash-tag-line.twoslash-tag-error-line {
+  background-color: var(--twoslash-error-bg);
+  border-left: 3px solid var(--twoslash-error-color);
+  color: var(--twoslash-error-color);
+}
+.twoslash .twoslash-tag-line.twoslash-tag-warn-line {
+  background-color: var(--twoslash-tag-warn-bg);
+  border-left: 3px solid var(--twoslash-tag-warn-color);
+  color: var(--twoslash-tag-warn-color);
+}
+.twoslash .twoslash-tag-line.twoslash-tag-annotate-line {
+  background-color: var(--twoslash-tag-annotate-bg);
+  border-left: 3px solid var(--twoslash-tag-annotate-color);
+  color: var(--twoslash-tag-annotate-color);
+}
+
+:root {
+  --vp-c-bg: #1b1b1f;
+  --vp-c-text-1: rgba(255, 255, 245, 0.86);
+  --vp-c-text-2: rgba(235, 235, 245, 0.6);
+  --vp-font-family-base: 'Chinese Quotes', 'Inter var', 'Inter', ui-sans-serif, system-ui,
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial,
+    'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+    'Noto Color Emoji';
+  --vp-font-family-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+
+  --vp-code-font-size: 0.875em;
+  --vp-c-border: #3c3f44;
+  --vp-c-brand: #83d0da50;
+  --vp-z-index-local-nav: 20;
+
+  --twoslash-popup-bg: var(--vp-c-bg, inherit);
+  --twoslash-popup-color: var(--vp-c-text-1);
+  --twoslash-docs-color: var(--vp-c-text-1);
+  --twoslash-docs-font: var(--vp-font-family-base);
+  --twoslash-code-font: var(--vp-font-family-mono);
+  --twoslash-code-size: var(--vp-code-font-size);
+  --twoslash-underline-color: #8888;
+  --twoslash-border-color: var(--vp-c-border);
+  --twoslash-cursor-color: var(--vp-c-brand);
+  /* --twoslash-matched-color: var(--vp-c-brand); */
+  --twoslash-unmatched-color: var(--vp-c-text-2);
+  --vp-code-line-height: 1.7;
+}
+
+.v-popper--theme-twoslash.v-popper--theme-twoslash.v-popper--theme-twoslash {
+  z-index: calc(var(--vp-z-index-local-nav) - 1);
+}
+
+.v-popper--theme-twoslash.v-popper--theme-twoslash.v-popper--theme-twoslash .v-popper__inner {
+  background: var(--twoslash-popup-bg);
+  /* color: var(--twoslash-popup-color); */
+  border-color: var(--twoslash-border-color);
+  padding: 0;
+}
+
+.v-popper--theme-twoslash.v-popper--theme-twoslash.v-popper--theme-twoslash .v-popper__arrow-outer {
+  border-color: var(--twoslash-border-color);
+}
+
+.v-popper--theme-twoslash.v-popper--theme-twoslash.v-popper--theme-twoslash .v-popper__arrow-inner {
+  border-color: var(--twoslash-popup-bg);
+}
+
+.twoslash-popup-container {
+  transform: translateY(1.5em);
+}
+
+.twoslash-query-presisted .twoslash-popup-container {
+  transform: translateY(1.8em);
+}
+
+.twoslash .v-popper {
+  display: inline-block;
+}
+
+.twoslash-completion-list .twoslash-completions-icon {
+  color: var(--twoslash-unmatched-color) !important;
+}
+
+.twoslash-floating.twoslash-floating .twoslash-popup-code {
+  max-width: 600px;
+  display: block;
+  width: fit-content;
+  min-width: 100%;
+  padding: 6px 12px;
+  line-height: var(--vp-code-line-height);
+  font-size: var(--twoslash-code-size);
+  transition: color 0.5s;
+  white-space: pre-wrap;
+}
+
+.twoslash-floating.twoslash-floating .twoslash-popup-docs,
+.twoslash-floating.twoslash-floating .twoslash-popup-error {
+  padding: 0px 12px 0px 12px !important;
+  font-family: var(--twoslash-docs-font);
+  font-size: 0.9em;
+  max-height: 500px;
+  max-width: 700px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  text-wrap: balance;
+}
+
+.twoslash-floating.twoslash-floating .twoslash-popup-docs {
+  border-top: 1px solid var(--twoslash-border-color);
+  color: var(--twoslash-docs-color);
+}
+
+.twoslash-floating.twoslash-floating .twoslash-popup-error {
+  color: var(--twoslash-error-color);
+}
+
+.twoslash-floating.twoslash-floating .twoslash-popup-error.twoslash-error-level-warning {
+  color: var(--twoslash-warn-color);
+}
+
+.twoslash-floating.twoslash-floating .twoslash-popup-docs p,
+.twoslash-floating.twoslash-floating .twoslash-popup-error p {
+  margin: 0;
+  padding: 6px 0;
+  text-wrap: balance;
+}
+
+.twoslash-floating.twoslash-floating
+  .twoslash-popup-docs
+  pre
+  .twoslash-floating.twoslash-floating
+  .twoslash-popup-error
+  pre {
+  background-color: var(--vp-code-block-bg);
+  border-radius: 8px;
+  padding: 12px;
+  margin: 6px -2px;
+  overflow-x: auto;
+}
+
+.twoslash-floating.twoslash-floating .twoslash-popup-docs-tags {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px !important;
+}
+
+.twoslash-floating.twoslash-floating .twoslash-popup-docs-tags .twoslash-popup-docs-tag-name {
+  font-family: var(--twoslash-code-font);
+  color: var(--twoslash-unmatched-color);
+  margin-right: 0.5em;
+}
+
+.twoslash-completion-cursor {
+  height: 1.2em;
+  width: 2px;
+  margin-bottom: -0.2em;
+  background: var(--twoslash-cursor-color);
+  display: inline-block;
+  user-select: none;
+}
+
+.twoslash-floating-show.twoslash-floating-show .v-popper__arrow-container {
+  display: none;
+}
+
+.twoslash-floating.twoslash-floating .twoslash-completion-list {
+  color: var(--twoslash-popup-color);
+  padding: 6px;
+  font-family: var(--twoslash-code-font);
+  font-size: var(--twoslash-code-size) !important;
+  margin: 0 !important;
+}
+
+/* Icons */
+.twoslash-floating.twoslash-floating .twoslash-completion-list .twoslash-completions-icon {
+  color: var(--twoslash-unmatched-color);
+  width: 1em;
+  flex: none;
+}
+
+.twoslash-floating.twoslash-floating
+  .twoslash-completion-list
+  li
+  span.twoslash-completion-unmatched {
+  color: var(--twoslash-unmatched-color);
+}
+
+.twoslash-floating.twoslash-floating .twoslash-completion-list .deprecated {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.twoslash-floating.twoslash-floating
+  .twoslash-completion-list
+  li
+  span.twoslash-completions-matched {
+  color: var(--twoslash-matched-color);
+}
+
+.twoslash-floating.twoslash-floating .twoslash-completion-list .twoslash-completions-icon svg {
+  width: 10px;
+  height: 10px;
+}
+
+.twoslash-floating.twoslash-floating .twoslash-completion-list li {
+  padding: 3px 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  line-height: 1em;
+}
+
+.twoslash-floating.twoslash-floating :not(pre, h1, h2, h3, h4, h5, h6) > code {
+  color: #8cccd5;
+}
+
+</style>
+
+<style>
+  .code-blocks {
+    position: relative;
+  }
+
+  .code-blocks-title {
+    border-radius: 6px;
+    background-color: #090909;
+  }
+
+  .code-blocks-title h5 {
+    margin: 0;
+    padding: 4px;
+    color: #878787;
+    border-bottom: 1px solid #505050;
+    font-size: 12px;
+    font-style: italic;
+  }
+
+  .code-blocks-title .circle1,
+.code-blocks-title .circle2,
+.code-blocks-title .circle3 {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+.code-blocks-title .circle1 {
+  background-color: #ff5f56;
+}
+
+.code-blocks-title .circle2 {
+  background-color: #ffbd2e;
+  margin: 0 5px;
+}
+
+.code-blocks-title .circle3 {
+  background-color: #27c93f;
+  margin: 0 8px 0 0;
+}
+
+  .code-blocks-pre {
+    position: relative;
+    margin: 0 0 16px;
+  }
+
+  .code-blocks-pre :not(pre,h1,h2,h3,h4,h5,h6)>code {
+    color: #8cccd5;
+  }
+
+  .code-blocks-pre .tab,
+  .code-blocks-pre .space {
+    position: relative;
+  }
+
+  .code-blocks-pre .tab::before {
+    content: '⇥';
+    position: absolute;
+    opacity: 0.3;
+  }
+
+  .code-blocks-pre .space::before {
+    content: '·';
+    position: absolute;
+    opacity: 0.3;
+  }
+
+  .code-blocks-lang {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    z-index: 1;
+    font-size: 10px;
+    color: #ff9e0466;
+  }
+
+  .btn-copy {
+    opacity: 0;
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #555555;
+    background-color: #110e0e;
+    border-radius: 4px;
+    outline: none;
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    right: 10px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .code-blocks:hover .btn-copy {
+    opacity: 1;
+  }
+
+  .btn-copy svg {
+    width: 16px;
+  }
+
+  .code-blocks pre {
+    position: relative;
+    padding: 24px 0;
+    overflow-x: auto;
+    background-color: #090909 !important;
+    --shiki-dark-bg: #090909;
+    --shiki-dark: #dbd7caee;
+    border-radius: 6px;
+    /* background: transparent;
+overflow: overlay;
+direction: ltr;
+text-align: left;
+white-space: pre;
+word-spacing: normal;
+word-break: normal;
+word-wrap: normal;
+-moz-tab-size: 4;
+-o-tab-size: 4;
+tab-size: 4;
+-webkit-hyphens: none;
+-moz-hyphens: none;
+-ms-hyphens: none;
+hyphens: none; */
+  }
+
+  .code-blocks pre>code {
+    padding: 0 24px;
+    display: block;
+  }
+
+  .code-blocks pre .line {
+    /* line-height: 1.7; */
+    font-size: 14px !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p,
+  ul {
+    margin: 0 0 16px;
+  }
+
+  h1 {
+    font-size: 34px;
+    line-height: 46px;
+  }
+
+  h2 {
+    font-size: 26px;
+    line-height: 36px;
+  }
+
+  h3 {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  h4 {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  h5 {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  h6 {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  p {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  h1 code,
+  h2 code,
+  h3 code,
+  h4 code,
+  h5 code,
+  p code,
+  ul code {
+    background: #343434 !important;
+    border-radius: 4px;
+    padding: 4px;
+  }
+
+  details {
+    border-radius: 6px;
+    margin-bottom: 16px;
+    background-color: #333;
+    padding-bottom: 1px;
+  }
+
+  summary {
+    background-color: #555;
+    padding: 10px;
+    cursor: pointer;
+    outline: none;
+    border-radius: 6px;
+    user-select: none;
+  }
+
+  details[open] summary {
+    background-color: #666;
+  }
+
+  details>p,
+  details>h4 {
+    padding: 0 10px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 1px solid #848484;
+  }
+
+  table img {
+    width: initial;
+  }
+
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #848484;
+  }
+
+  thead th:not(:last-child),
+  tbody td:not(:last-child) {
+    border-right: 1px solid #848484;
+  }
+
+  th {
+    background-color: #232121;
+  }
+
+  tr:hover {
+    background-color: #232121;
+  }
+
+  .heading-anchor {
+    position: relative;
+  }
+
+  .heading-anchor:hover .anchor {
+    opacity: 1;
+  }
+
+  .anchor {
+    position: absolute;
+    padding: 0 5px 0 0;
+    left: -20px;
+    opacity: 0;
+    transition: all 300ms ease-in-out;
+  }
+
+  .opacity-0 {
+    opacity: 0;
+  }
+
+  .markdown-group-tab {
+    margin: 0 0 8px;
+  }
+
+  .markdown-code-group .code-blocks-group {
+    display: none;
+  }
+
+  .markdown-code-group .code-blocks-group.active {
+    display: block;
+  }
+</style>
+
+<style>
+  main {
+    max-width: 890px;
+    margin: 0 auto;
+    padding: 48px 10px;
+  }
+
+  .katex * {
+    font-family: initial !important;
+  }
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-github-alerts/styles/github-colors-light.css">
+<link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/markdown-it-github-alerts/styles/github-colors-dark-media.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-github-alerts/styles/github-base.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-code-group/styles/code-group-colors-light.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-code-group/styles/code-group-colors-dark-media.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-code-group/styles/code-group-base.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/floating-vue@5.2.2/dist/style.css">
+
+<script type="importmap">
+{
+  "imports": {
+    "@floating-ui/dom": "https://cdn.jsdelivr.net/npm/@floating-ui/dom@1.6.3/+esm",
+    "vue": "https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.41/vue.esm-browser.prod.js"
+  }
+}
+</script>
+
+<script type="module" src="https://unpkg.com/@uiw/github-corners/lib/index.js?module"></script>
+</head>
+<body>
+<github-corners target="__blank" position="fixed"
+href="https://github.com/namnh240795/token-manager"></github-corners>
+
+  <main>
+    <p align="center">
+<a href="https://www.npmjs.com/package/brainless-token-manager" target="_blank" rel="noopener noreferrer">
+<img src="https://api.iconify.design/fluent:brain-circuit-20-filled.svg?color=%235fc059" alt="logo" style="width: 100px;"/></a>
+</p>
+<p align="center">
+    This package help you do refresh token brainlessly. Super easy to use
+</p>
+<p align="center">
+  <a href="https://www.npmjs.com/package/brainless-token-manager" target="_blank" rel="noopener noreferrer"><img src="https://badge.fury.io/js/csvs-parsers.svg" alt="NPM Version" /></a>
+  <a href="https://www.npmjs.com/package/brainless-token-manager" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/npm/dt/brainless-token-manager.svg?logo=npm" alt="NPM Downloads" /></a>
+  <a href="https://bundlephobia.com/result?p=brainless-token-manager" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/bundlephobia/minzip/brainless-token-manager" alt="Minizip" /></a>
+  <a href="https://github.com/hunghg255/brainless-token-manager/graphs/contributors" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/all_contributors-1-orange.svg" alt="Contributors" /></a>
+  <a href="https://github.com/hunghg255/brainless-token-manager/blob/main/LICENSE" target="_blank" rel="noopener noreferrer"><img src="https://badgen.net/github/license/namnh240795/token-manager" alt="License" /></a>
+</p>
+<ul>
+<li>
+<p><a href="https://reactjs-handle-refresh-token.vercel.app/" target="_blank" rel="noopener">Live Demo</a></p>
+</li>
+<li>
+<p><a href="https://stackblitz.com/edit/react-ts-mdxcmx?file=App.tsx" target="_blank" rel="noopener">Playground Stackblitz</a></p>
+</li>
+</ul>
+<h2 class="heading-anchor" id="install"><a class="anchor" href="#install">#</a>Install</h2>
+<p>
+<div class="markdown-code-group">
+        <div class="markdown-group-tab">
+          <div class="markdown-group-tab-item active" data-code-group="npm"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256"><path fill="#C12127" d="M0 256V0h256v256z"></path><path fill="#FFF" d="M48 48h160v160h-32V80h-48v128H48z"></path></svg>
+            <span>npm</span>
+            </div><div class="markdown-group-tab-item" data-code-group="yarn"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 128 128"><g fill="#2c8ebb"><path d="M99.24 80.71C94.9 80.76 91.1 83 87.89 85c-6 3.71-9 3.47-9 3.47l-.1-.17c-.41-.67 1.92-6.68-.69-13.84c-2.82-7.83-7.3-9.72-6.94-10.32c1.53-2.59 5.36-6.7 6.89-14.36c.91-4.64.67-12.28-1.39-16.28c-.38-.74-3.78 1.24-3.78 1.24s-3.18-7.09-4.07-7.66c-2.87-1.84-6 7.61-6 7.61a14 14 0 0 0-11.71 4.5a9.64 9.64 0 0 1-3.85 2.27c-.41.14-.91.12-2.15 3.47c-1.9 5.07 3.24 10.81 3.24 10.81s-6.13 4.33-8.4 9.72a24.78 24.78 0 0 0-1.75 11.68s-4.36 3.78-4.64 7.68a12.87 12.87 0 0 0 1.77 7.83a1.94 1.94 0 0 0 2.63.91s-2.9 3.38-.19 4.81c2.47 1.29 6.63 2 8.83-.19c1.6-1.6 1.92-5.17 2.51-6.63c.14-.34.62.57 1.08 1a10 10 0 0 0 1.36 1s-3.9 1.68-2.3 5.51c.53 1.27 2.42 2.08 5.51 2.06c1.15 0 13.76-.72 17.12-1.53a4.33 4.33 0 0 0 2.61-1.46a63 63 0 0 0 15.49-7c4.74-3.09 6.68-3.93 10.51-4.84c3.16-.75 2.95-5.65-1.24-5.58z"></path><path d="M64 2a62 62 0 1 0 62 62A62 62 0 0 0 64 2zm37.3 87.83c-3.35.81-4.91 1.44-9.41 4.36a67 67 0 0 1-15.56 7.18a8.71 8.71 0 0 1-3.64 1.77c-3.81.93-16.88 1.63-17.91 1.63h-.24c-4 0-6.27-1.24-7.49-2.54c-3.4 1.7-7.8 1-11-.69a5.55 5.55 0 0 1-3-3.9a6 6 0 0 1 0-2.06a6.66 6.66 0 0 1-.79-1A16.38 16.38 0 0 1 30 84.52c.29-3.73 2.87-7.06 4.55-8.83A28.56 28.56 0 0 1 36.61 64a26.82 26.82 0 0 1 6.82-9c-1.65-2.78-3.33-7.06-1.7-11.42c1.17-3.11 2.13-4.84 4.24-5.58a6.84 6.84 0 0 0 2.51-1.34A17.65 17.65 0 0 1 60.34 31c.19-.48.41-1 .65-1.46c1.6-3.4 3.3-5.31 5.29-6a4.88 4.88 0 0 1 4.4.5c.65.43 1.48 1 3.9 6a4.69 4.69 0 0 1 2.85-.1a3.81 3.81 0 0 1 2.39 1.94c2.47 4.74 2.8 13.19 1.72 18.62a33.8 33.8 0 0 1-5.84 13.31a25.73 25.73 0 0 1 5.77 9.43a25.42 25.42 0 0 1 1.41 10.41A28.7 28.7 0 0 0 86 81.91c3.06-1.89 7.68-4.74 13.19-4.81a6.62 6.62 0 0 1 7 5.7a6.35 6.35 0 0 1-4.89 7.03z"></path></g></svg>
+            <span>yarn</span>
+            </div><div class="markdown-group-tab-item" data-code-group="pnpm"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 128 128"><path fill="#f8ab00" d="M0 .004V40h39.996V.004Zm43.996 0V40h40V.004Zm44.008 0V40H128V.004Zm0 43.996v39.996H128V44Z"></path><path fill="#4c4c4c" d="M43.996 44v39.996h40V44ZM0 87.996v40h39.996v-40Zm43.996 0v40h40v-40Zm44.008 0v40H128v-40Z"></path></svg>
+            <span>pnpm</span>
+            </div><div class="markdown-group-tab-item" data-code-group="bun"><svg id="Bun" width="1.2em" height="1.2em" viewBox="0 0 80 70"><path id="Shadow" d="M71.09,20.74c-.16-.17-.33-.34-.5-.5s-.33-.34-.5-.5-.33-.34-.5-.5-.33-.34-.5-.5-.33-.34-.5-.5-.33-.34-.5-.5-.33-.34-.5-.5A26.46,26.46,0,0,1,75.5,35.7c0,16.57-16.82,30.05-37.5,30.05-11.58,0-21.94-4.23-28.83-10.86l.5.5.5.5.5.5.5.5.5.5.5.5.5.5C19.55,65.3,30.14,69.75,42,69.75c20.68,0,37.5-13.48,37.5-30C79.5,32.69,76.46,26,71.09,20.74Z"></path><g id="Body"><path id="Background" d="M73,35.7c0,15.21-15.67,27.54-35,27.54S3,50.91,3,35.7C3,26.27,9,17.94,18.22,13S33.18,3,38,3s8.94,4.13,19.78,10C67,17.94,73,26.27,73,35.7Z" style="fill: rgb(251, 240, 223);"></path><path id="Bottom_Shadow" data-name="Bottom Shadow" d="M73,35.7a21.67,21.67,0,0,0-.8-5.78c-2.73,33.3-43.35,34.9-59.32,24.94A40,40,0,0,0,38,63.24C57.3,63.24,73,50.89,73,35.7Z" style="fill: rgb(246, 222, 206);"></path><path id="Light_Shine" data-name="Light Shine" d="M24.53,11.17C29,8.49,34.94,3.46,40.78,3.45A9.29,9.29,0,0,0,38,3c-2.42,0-5,1.25-8.25,3.13-1.13.66-2.3,1.39-3.54,2.15-2.33,1.44-5,3.07-8,4.7C8.69,18.13,3,26.62,3,35.7c0,.4,0,.8,0,1.19C9.06,15.48,20.07,13.85,24.53,11.17Z" style="fill: rgb(255, 254, 252);"></path><path id="Top" d="M35.12,5.53A16.41,16.41,0,0,1,29.49,18c-.28.25-.06.73.3.59,3.37-1.31,7.92-5.23,6-13.14C35.71,5,35.12,5.12,35.12,5.53Zm2.27,0A16.24,16.24,0,0,1,39,19c-.12.35.31.65.55.36C41.74,16.56,43.65,11,37.93,5,37.64,4.74,37.19,5.14,37.39,5.49Zm2.76-.17A16.42,16.42,0,0,1,47,17.12a.33.33,0,0,0,.65.11c.92-3.49.4-9.44-7.17-12.53C40.08,4.54,39.82,5.08,40.15,5.32ZM21.69,15.76a16.94,16.94,0,0,0,10.47-9c.18-.36.75-.22.66.18-1.73,8-7.52,9.67-11.12,9.45C21.32,16.4,21.33,15.87,21.69,15.76Z" style="fill: rgb(204, 190, 167); fill-rule: evenodd;"></path><path id="Outline" d="M38,65.75C17.32,65.75.5,52.27.5,35.7c0-10,6.18-19.33,16.53-24.92,3-1.6,5.57-3.21,7.86-4.62,1.26-.78,2.45-1.51,3.6-2.19C32,1.89,35,.5,38,.5s5.62,1.2,8.9,3.14c1,.57,2,1.19,3.07,1.87,2.49,1.54,5.3,3.28,9,5.27C69.32,16.37,75.5,25.69,75.5,35.7,75.5,52.27,58.68,65.75,38,65.75ZM38,3c-2.42,0-5,1.25-8.25,3.13-1.13.66-2.3,1.39-3.54,2.15-2.33,1.44-5,3.07-8,4.7C8.69,18.13,3,26.62,3,35.7,3,50.89,18.7,63.25,38,63.25S73,50.89,73,35.7C73,26.62,67.31,18.13,57.78,13,54,11,51.05,9.12,48.66,7.64c-1.09-.67-2.09-1.29-3-1.84C42.63,4,40.42,3,38,3Z"></path></g><g id="Mouth"><g id="Background-2" data-name="Background"><path d="M45.05,43a8.93,8.93,0,0,1-2.92,4.71,6.81,6.81,0,0,1-4,1.88A6.84,6.84,0,0,1,34,47.71,8.93,8.93,0,0,1,31.12,43a.72.72,0,0,1,.8-.81H44.26A.72.72,0,0,1,45.05,43Z" style="fill: rgb(183, 20, 34);"></path></g><g id="Tongue"><path id="Background-3" data-name="Background" d="M34,47.79a6.91,6.91,0,0,0,4.12,1.9,6.91,6.91,0,0,0,4.11-1.9,10.63,10.63,0,0,0,1-1.07,6.83,6.83,0,0,0-4.9-2.31,6.15,6.15,0,0,0-5,2.78C33.56,47.4,33.76,47.6,34,47.79Z" style="fill: rgb(255, 97, 100);"></path><path id="Outline-2" data-name="Outline" d="M34.16,47a5.36,5.36,0,0,1,4.19-2.08,6,6,0,0,1,4,1.69c.23-.25.45-.51.66-.77a7,7,0,0,0-4.71-1.93,6.36,6.36,0,0,0-4.89,2.36A9.53,9.53,0,0,0,34.16,47Z"></path></g><path id="Outline-3" data-name="Outline" d="M38.09,50.19a7.42,7.42,0,0,1-4.45-2,9.52,9.52,0,0,1-3.11-5.05,1.2,1.2,0,0,1,.26-1,1.41,1.41,0,0,1,1.13-.51H44.26a1.44,1.44,0,0,1,1.13.51,1.19,1.19,0,0,1,.25,1h0a9.52,9.52,0,0,1-3.11,5.05A7.42,7.42,0,0,1,38.09,50.19Zm-6.17-7.4c-.16,0-.2.07-.21.09a8.29,8.29,0,0,0,2.73,4.37A6.23,6.23,0,0,0,38.09,49a6.28,6.28,0,0,0,3.65-1.73,8.3,8.3,0,0,0,2.72-4.37.21.21,0,0,0-.2-.09Z"></path></g><g id="Face"><ellipse id="Right_Blush" data-name="Right Blush" cx="53.22" cy="40.18" rx="5.85" ry="3.44" style="fill: rgb(254, 187, 208);"></ellipse><ellipse id="Left_Bluch" data-name="Left Bluch" cx="22.95" cy="40.18" rx="5.85" ry="3.44" style="fill: rgb(254, 187, 208);"></ellipse><path id="Eyes" d="M25.7,38.8a5.51,5.51,0,1,0-5.5-5.51A5.51,5.51,0,0,0,25.7,38.8Zm24.77,0A5.51,5.51,0,1,0,45,33.29,5.5,5.5,0,0,0,50.47,38.8Z" style="fill-rule: evenodd;"></path><path id="Iris" d="M24,33.64a2.07,2.07,0,1,0-2.06-2.07A2.07,2.07,0,0,0,24,33.64Zm24.77,0a2.07,2.07,0,1,0-2.06-2.07A2.07,2.07,0,0,0,48.75,33.64Z" style="fill: rgb(255, 255, 255); fill-rule: evenodd;"></path></g></svg>
+            <span>bun</span>
+            </div>
+        </div>
+        
+<div class="code-blocks markdown-it-code-copy  code-blocks-group npm active">
+  
+
+  <div class="code-blocks-pre">
+    <pre class="shiki shiki-themes lucy lucy" style="background-color:#1a1d27;--shiki-dark-bg:#1a1d27;color:#d7d7d7;--shiki-dark:#d7d7d7" tabindex="0"><code class="language-bash"><span class="line"><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">npm</span><span class="space"> </span><span style="color:#E3CF65;--shiki-dark:#E3CF65">install</span><span class="space"> </span><span style="color:#E3CF65;--shiki-dark:#E3CF65">brainless-token-manager@latest</span></span></code></pre>
+
+    <span class="code-blocks-lang">bash</span>
+    <button class="btn-copy">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#555555" d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm0-2h9V4H9zm-4 6q-.825 0-1.412-.587T3 20V7q0-.425.288-.712T4 6q.425 0 .713.288T5 7v13h10q.425 0 .713.288T16 21q0 .425-.288.713T15 22zm4-6V4z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="code-blocks markdown-it-code-copy  code-blocks-group yarn ">
+  
+
+  <div class="code-blocks-pre">
+    <pre class="shiki shiki-themes lucy lucy" style="background-color:#1a1d27;--shiki-dark-bg:#1a1d27;color:#d7d7d7;--shiki-dark:#d7d7d7" tabindex="0"><code class="language-bash"><span class="line"><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">yarn</span><span class="space"> </span><span style="color:#E3CF65;--shiki-dark:#E3CF65">add</span><span class="space"> </span><span style="color:#E3CF65;--shiki-dark:#E3CF65">brainless-token-manager@latest</span></span></code></pre>
+
+    <span class="code-blocks-lang">bash</span>
+    <button class="btn-copy">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#555555" d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm0-2h9V4H9zm-4 6q-.825 0-1.412-.587T3 20V7q0-.425.288-.712T4 6q.425 0 .713.288T5 7v13h10q.425 0 .713.288T16 21q0 .425-.288.713T15 22zm4-6V4z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="code-blocks markdown-it-code-copy  code-blocks-group pnpm ">
+  
+
+  <div class="code-blocks-pre">
+    <pre class="shiki shiki-themes lucy lucy" style="background-color:#1a1d27;--shiki-dark-bg:#1a1d27;color:#d7d7d7;--shiki-dark:#d7d7d7" tabindex="0"><code class="language-bash"><span class="line"><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">pnpm</span><span class="space"> </span><span style="color:#E3CF65;--shiki-dark:#E3CF65">i</span><span class="space"> </span><span style="color:#E3CF65;--shiki-dark:#E3CF65">-D</span><span class="space"> </span><span style="color:#E3CF65;--shiki-dark:#E3CF65">brainless-token-manager@latest</span></span></code></pre>
+
+    <span class="code-blocks-lang">bash</span>
+    <button class="btn-copy">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#555555" d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm0-2h9V4H9zm-4 6q-.825 0-1.412-.587T3 20V7q0-.425.288-.712T4 6q.425 0 .713.288T5 7v13h10q.425 0 .713.288T16 21q0 .425-.288.713T15 22zm4-6V4z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="code-blocks markdown-it-code-copy  code-blocks-group bun ">
+  
+
+  <div class="code-blocks-pre">
+    <pre class="shiki shiki-themes lucy lucy" style="background-color:#1a1d27;--shiki-dark-bg:#1a1d27;color:#d7d7d7;--shiki-dark:#d7d7d7" tabindex="0"><code class="language-bash"><span class="line"><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">bun</span><span class="space"> </span><span style="color:#E3CF65;--shiki-dark:#E3CF65">install</span><span class="space"> </span><span style="color:#E3CF65;--shiki-dark:#E3CF65">brainless-token-manager@latest</span></span></code></pre>
+
+    <span class="code-blocks-lang">bash</span>
+    <button class="btn-copy">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#555555" d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm0-2h9V4H9zm-4 6q-.825 0-1.412-.587T3 20V7q0-.425.288-.712T4 6q.425 0 .713.288T5 7v13h10q.425 0 .713.288T16 21q0 .425-.288.713T15 22zm4-6V4z"/></svg>
+    </button>
+  </div>
+</div>
+</div></p>
+<h2 class="heading-anchor" id="flow"><a class="anchor" href="#flow">#</a>Flow</h2>
+<ul>
+<li>Checking refresh token -&gt; expired -&gt; onInvalidRefreshToken -&gt; clear token on your storage -&gt; logout</li>
+<li>Valid token -&gt; return token -&gt; run as normal</li>
+<li>Token in valid -&gt; refresh token -&gt; onRefreshToken success -&gt; save token and refresh token to storage -&gt; perform request</li>
+</ul>
+<h2 class="heading-anchor" id="api"><a class="anchor" href="#api">#</a>API</h2>
+
+<div class="code-blocks markdown-it-code-copy  code-blocks-group ts ">
+  
+
+  <div class="code-blocks-pre">
+    <pre class="shiki shiki-themes lucy lucy" style="background-color:#1a1d27;--shiki-dark-bg:#1a1d27;color:#d7d7d7;--shiki-dark:#d7d7d7" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">import</span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">TokenManager</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">from</span><span class="space"> </span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">brainless-token-manager</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#5E6173;--shiki-dark:#5E6173">//</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">Works</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">fine</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">with</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">JWT</span></span>
+<span class="line"><span style="color:#5E6173;--shiki-dark:#5E6173">//</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">if</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">you</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">use</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">other</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">tokens</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">JWT.</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">you</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">need</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">to</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">initialize</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">isValidToken</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">and</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">isValidRefreshToken</span></span>
+<span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">interface</span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">TokenManagerContructor</span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">getAccessToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">Promise</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span style="color:#88898F;--shiki-dark:#88898F">>;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">getRefreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">Promise</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span style="color:#88898F;--shiki-dark:#88898F">>;</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">//</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">if</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">you</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">don't</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">have</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">refresh</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">token</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">use</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">the</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">same</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">as</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">getAccessToken</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">executeRefreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">Promise</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color: #179fff">{</span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span style="color:#88898F;--shiki-dark:#88898F">;</span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">refresh_token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">></span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">onRefreshTokenSuccess</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #179fff">{</span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">token</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">refresh_token</span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color: #179fff">{</span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span style="color:#88898F;--shiki-dark:#88898F">;</span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">refresh_token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span class="space"> </span><span style="color: #179fff">}</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">void</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">onInvalidRefreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">void</span><span style="color:#88898F;--shiki-dark:#88898F">;</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">//</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">will</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">trigger</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">when</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">refresh</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">token</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">expired</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">isValidToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D">token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">Promise</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">boolean</span><span style="color:#88898F;--shiki-dark:#88898F">>;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">isValidRefreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D">refresh_token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">Promise</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">boolean</span><span style="color:#88898F;--shiki-dark:#88898F">>;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">refreshTimeout</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">number</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span style="color: #179fff">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span class="space"> </span><span style="color:#AF98E6;--shiki-dark:#AF98E6">tokenManagerInstance</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">new</span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4">TokenManager</span><span style="color: #ffd700">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">options:</span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">TokenManagerContructor</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span></code></pre>
+
+    <span class="code-blocks-lang">ts</span>
+    <button class="btn-copy">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#555555" d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm0-2h9V4H9zm-4 6q-.825 0-1.412-.587T3 20V7q0-.425.288-.712T4 6q.425 0 .713.288T5 7v13h10q.425 0 .713.288T16 21q0 .425-.288.713T15 22zm4-6V4z"/></svg>
+    </button>
+  </div>
+</div>
+<h2 class="heading-anchor" id="flow"><a class="anchor" href="#flow">#</a>Flow</h2>
+<p><img src="https://raw.githubusercontent.com/hunghg255/token-manager/main/img/image.png" alt="Demo" /></p>
+<h2 class="heading-anchor" id="example-with-umi-request"><a class="anchor" href="#example-with-umi-request">#</a>Example with <code>umi-request</code></h2>
+
+<div class="code-blocks markdown-it-code-copy  code-blocks-group ts ">
+  
+
+  <div class="code-blocks-pre">
+    <pre class="shiki shiki-themes lucy lucy twoslash lsp" style="background-color:#1a1d27;--shiki-dark-bg:#1a1d27;color:#d7d7d7;--shiki-dark:#d7d7d7" tabindex="0"><code class="language-ts"><span class="line"><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">import</span><span class="space"> </span><span style="color: #179fff">{</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">var</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> extend</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Extend</span></span></code></span>extend</span></span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color: #179fff">}</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">from</span><span class="space"> </span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">umi-request</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">import</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">class</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> TokenManager</span></span></code></span>TokenManager</span></span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span class="space"> </span><span style="color: #179fff">{</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> injectBearer</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#88898F;--shiki-dark:#88898F"> &#x3C;</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">TToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> extends</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> TConfig</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> extends</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> TInjectBearerConfigs</span><span style="color:#88898F;--shiki-dark:#88898F">>(</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D">token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> TToken</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> configs</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> TConfig</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> undefined</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> TConfig</span></span></code></span>injectBearer</span></span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> parseJwt</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#88898F;--shiki-dark:#88898F"> (</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D">token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Partial</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">TParseJwt</span><span style="color:#88898F;--shiki-dark:#88898F">></span></span></code></span>parseJwt</span></span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color: #179fff">}</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">from</span><span class="space"> </span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">brainless-token-manager</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#5E6173;--shiki-dark:#5E6173">//</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">Can</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">implement</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">by</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">umi-request,</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">axios,</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">fetch....</span></span>
+<span class="line"><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">export</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> </span><span style="color:#AF98E6;--shiki-dark:#AF98E6"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> request</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> RequestMethod</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">false</span><span style="color:#88898F;--shiki-dark:#88898F">></span></span></code></span>request</span></span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">function</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> extend</span><span style="color:#88898F;--shiki-dark:#88898F">(</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D">options</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> ExtendOptionsInit</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> RequestMethod</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">false</span><span style="color:#88898F;--shiki-dark:#88898F">></span><span style="color:#88898F;--shiki-dark:#88898F"> (</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">+</span><span style="color:#AF98E6;--shiki-dark:#AF98E6">2</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> overloads</span><span style="color:#88898F;--shiki-dark:#88898F">)</span></span></code></span>extend</span></span><span style="color: #ffd700">(</span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">RequestOptionsInit</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">prefix</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">|</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> undefined</span></span></code></span>prefix</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">APP_ENDPOINT_URL_HERE</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">RequestInit</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">headers</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> HeadersInit </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">|</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> undefined</span></span></code><div class="twoslash-popup-docs"><p>A Headers object, an object literal, or an array of two-item arrays to set request's headers.</p></div></span>headers</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">Content-Type</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">application/json</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">RequestOptionsInit</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">errorHandler</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#88898F;--shiki-dark:#88898F"> ((</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D">error</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> ResponseError</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">any</span><span style="color:#88898F;--shiki-dark:#88898F">>)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> void</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> undefined</span></span></code></span>errorHandler</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">error</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> ResponseError</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">any</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span></span></code></span>error</span></span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">throw</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">error</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> ResponseError</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">any</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span></span></code></span>error</span></span><span style="color:#88898F;--shiki-dark:#88898F">?.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">ResponseError</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">any</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">data: any</span></span></code></span>data</span></span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">||</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">error</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> ResponseError</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">any</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span></span></code></span>error</span></span><span style="color:#88898F;--shiki-dark:#88898F">?.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">ResponseError</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">any</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">response: Response</span></span></code></span>response</span></span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span style="color: #179fff">}</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> </span><span style="color:#AF98E6;--shiki-dark:#AF98E6"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> tokenManager</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> TokenManager</span></span></code></span>tokenManager</span></span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">new</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">new</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> TokenManager</span><span style="color:#88898F;--shiki-dark:#88898F">({</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> getRefreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> getAccessToken</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> isValidToken</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> refreshTimeout</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> executeRefreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> onInvalidRefreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> onRefreshTokenSuccess</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> isValidRefreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#88898F;--shiki-dark:#88898F"> }</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: TokenManagerContructor</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: TokenManager</span></span></code></span>TokenManager</span></span><span style="color: #ffd700">(</span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">TokenManagerContructor</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">getAccessToken: </span><span style="color:#88898F;--shiki-dark:#88898F">()</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> Promise</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">string</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span></span></code></span>getAccessToken</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">async</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> </span><span style="color:#AF98E6;--shiki-dark:#AF98E6"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> null</span></span></code></span>token</span></span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">var</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> localStorage</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Storage</span></span></code></span>localStorage</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">Storage</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">getItem</span><span style="color:#88898F;--shiki-dark:#88898F">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">key: string</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: string </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">|</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> null</span></span></code><div class="twoslash-popup-docs"><p>Returns the current value associated with the given key, or null if the given key does not exist.</p></div></span>getItem</span></span><span style="color: #ffd700">(</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">accessToken</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">return</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">`</span><span style="color:#88898F;--shiki-dark:#88898F">$</span><span style="color: #179fff">{</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> null</span></span></code></span>token</span></span><span style="color: #179fff">}</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">`</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">TokenManagerContructor</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">getRefreshToken: </span><span style="color:#88898F;--shiki-dark:#88898F">()</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> Promise</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">string</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span></span></code></span>getRefreshToken</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">async</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> </span><span style="color:#AF98E6;--shiki-dark:#AF98E6"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> refreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> null</span></span></code></span>refreshToken</span></span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">var</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> localStorage</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Storage</span></span></code></span>localStorage</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">Storage</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">getItem</span><span style="color:#88898F;--shiki-dark:#88898F">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">key: string</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: string </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">|</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> null</span></span></code><div class="twoslash-popup-docs"><p>Returns the current value associated with the given key, or null if the given key does not exist.</p></div></span>getItem</span></span><span style="color: #ffd700">(</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">refreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">return</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">`</span><span style="color:#88898F;--shiki-dark:#88898F">$</span><span style="color: #179fff">{</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> refreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> null</span></span></code></span>refreshToken</span></span><span style="color: #179fff">}</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">`</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">TokenManagerContructor</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">onInvalidRefreshToken: </span><span style="color:#88898F;--shiki-dark:#88898F">()</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> void</span></span></code></span>onInvalidRefreshToken</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">//</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">Logout,</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">redirect</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">to</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">login</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">var</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> localStorage</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Storage</span></span></code></span>localStorage</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">Storage</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">removeItem</span><span style="color:#88898F;--shiki-dark:#88898F">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">key: string</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">void</span></span></code><div class="twoslash-popup-docs"><p>Removes the key/value pair with the given key, if a key/value pair with the given key exists.</p>
+<p>Dispatches a storage event on Window objects holding an equivalent Storage object.</p></div></span>removeItem</span></span><span style="color: #ffd700">(</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">accessToken</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">var</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> localStorage</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Storage</span></span></code></span>localStorage</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">Storage</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">removeItem</span><span style="color:#88898F;--shiki-dark:#88898F">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">key: string</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">void</span></span></code><div class="twoslash-popup-docs"><p>Removes the key/value pair with the given key, if a key/value pair with the given key exists.</p>
+<p>Dispatches a storage event on Window objects holding an equivalent Storage object.</p></div></span>removeItem</span></span><span style="color: #ffd700">(</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">refreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">TokenManagerContructor</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">executeRefreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#88898F;--shiki-dark:#88898F"> (()</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> Promise</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;{</span></span>
+<span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">    token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">    refresh_token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span style="color:#88898F;--shiki-dark:#88898F">}>)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> undefined</span></span></code></span>executeRefreshToken</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">async</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> </span><span style="color:#AF98E6;--shiki-dark:#AF98E6"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> refreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> null</span></span></code></span>refreshToken</span></span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">var</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> localStorage</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Storage</span></span></code></span>localStorage</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">Storage</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">getItem</span><span style="color:#88898F;--shiki-dark:#88898F">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">key: string</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: string </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">|</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> null</span></span></code><div class="twoslash-popup-docs"><p>Returns the current value associated with the given key, or null if the given key does not exist.</p></div></span>getItem</span></span><span style="color: #ffd700">(</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">refreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">if</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">!</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> refreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> null</span></span></code></span>refreshToken</span></span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">return</span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>token</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color:#88898F;--shiki-dark:#88898F">''</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">refresh_token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>refresh_token</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color:#88898F;--shiki-dark:#88898F">''</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span></span>
+<span class="line"></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> </span><span style="color:#AF98E6;--shiki-dark:#AF98E6"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> r</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> any</span></span></code></span>r</span></span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">await</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> request</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> RequestMethod</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">false</span><span style="color:#88898F;--shiki-dark:#88898F">></span></span></code></span>request</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">RequestMethod</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#AF98E6;--shiki-dark:#AF98E6">false</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">post: RequestMethod</span></span>
+<span class="line"><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">any</span><span style="color:#88898F;--shiki-dark:#88898F">>(</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D">url</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> options</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> RequestOptionsInit</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> undefined</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> Promise</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">any</span><span style="color:#88898F;--shiki-dark:#88898F">></span><span style="color:#88898F;--shiki-dark:#88898F"> (</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">+</span><span style="color:#AF98E6;--shiki-dark:#AF98E6">2</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> overloads</span><span style="color:#88898F;--shiki-dark:#88898F">)</span></span></code></span>post</span></span><span style="color: #ffd700">(</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">/auth/refresh-token</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">RequestOptionsInit</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">data</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> any</span></span></code></span>data</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">refreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>refreshToken</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> refreshToken</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span></span></code></span>refreshToken</span></span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">return</span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>token</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> r</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> any</span></span></code></span>r</span></span><span style="color:#88898F;--shiki-dark:#88898F">?.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">accessToken</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">refresh_token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>refresh_token</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> r</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> any</span></span></code></span>r</span></span><span style="color:#88898F;--shiki-dark:#88898F">?.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">refreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">TokenManagerContructor</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">onRefreshTokenSuccess</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#88898F;--shiki-dark:#88898F"> (({</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> token</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> refresh_token </span><span style="color:#88898F;--shiki-dark:#88898F">}</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#88898F;--shiki-dark:#88898F"> {</span></span>
+<span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">    token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">    refresh_token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span style="color:#88898F;--shiki-dark:#88898F">})</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> void</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> |</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> undefined</span></span></code></span>onRefreshTokenSuccess</span></span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color: #179fff">{</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> </span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>token</span></span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> </span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">refresh_token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>refresh_token</span></span><span class="space"> </span><span style="color: #179fff">}</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">if</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>token</span></span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x26;&#x26;</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">refresh_token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>refresh_token</span></span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">var</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> localStorage</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Storage</span></span></code></span>localStorage</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">Storage</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">setItem</span><span style="color:#88898F;--shiki-dark:#88898F">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">key: string</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> value: string</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">void</span></span></code><div class="twoslash-popup-docs"><p>Sets the value of the pair identified by key to value, creating a new key/value pair if none existed for key previously.</p>
+<p>Throws a "QuotaExceededError" DOMException exception if the new value couldn't be set. (Setting could fail if, e.g., the user has disabled storage for the site, or if the quota has been exceeded.)</p>
+<p>Dispatches a storage event on Window objects holding an equivalent Storage object.</p></div></span>setItem</span></span><span style="color: #ffd700">(</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">accessToken</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>token</span></span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">var</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> localStorage</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Storage</span></span></code></span>localStorage</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">Storage</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">setItem</span><span style="color:#88898F;--shiki-dark:#88898F">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">key: string</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> value: string</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">void</span></span></code><div class="twoslash-popup-docs"><p>Sets the value of the pair identified by key to value, creating a new key/value pair if none existed for key previously.</p>
+<p>Throws a "QuotaExceededError" DOMException exception if the new value couldn't be set. (Setting could fail if, e.g., the user has disabled storage for the site, or if the quota has been exceeded.)</p>
+<p>Dispatches a storage event on Window objects holding an equivalent Storage object.</p></div></span>setItem</span></span><span style="color: #ffd700">(</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">refreshToken</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">refresh_token</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>refresh_token</span></span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">,</span></span>
+<span class="line"><span style="color: #179fff">}</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">export</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> privateRequest</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#88898F;--shiki-dark:#88898F"> (</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D">request</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> any</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> suffixUrl</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> configs</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> any</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Promise</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">any</span><span style="color:#88898F;--shiki-dark:#88898F">></span></span></code></span>privateRequest</span></span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">async</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">request</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> any</span></span></code></span>request</span></span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">any</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> </span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">suffixUrl</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>suffixUrl</span></span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> </span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">configs</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> any</span></span></code></span>configs</span></span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">any</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=></span><span class="space"> </span><span style="color: #179fff">{</span></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> </span><span style="color:#AF98E6;--shiki-dark:#AF98E6"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span></span></code></span>token</span></span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">=</span><span class="space"> </span><span style="color: #ffd700">(</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">await</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> tokenManager</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> TokenManager</span></span></code></span>tokenManager</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">TokenManager</span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#76C5A4;--shiki-dark:#76C5A4">getToken</span><span style="color:#88898F;--shiki-dark:#88898F">()</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">Promise</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">unknown</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span></span></code></span>getToken</span></span><span style="color: #ffd700">(</span><span style="color: #ffd700">)</span><span style="color: #ffd700">)</span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">as</span><span class="space"> </span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"></span>
+<span class="line"><span class="space"> </span><span class="space"> </span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">return</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">request</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> any</span></span></code></span>request</span></span><span style="color: #ffd700">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">suffixUrl</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> string</span></span></code></span>suffixUrl</span></span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> </span><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">injectBearer</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">string</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> any</span><span style="color:#88898F;--shiki-dark:#88898F">>(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">token: string</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> configs</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> any</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">: any</span></span></code></span>injectBearer</span></span><span style="color: #ffd700">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> token</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span></span></code></span>token</span></span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> </span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4">configs</span><span style="color:#88898F;--shiki-dark:#88898F">:</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"> any</span></span></code></span>configs</span></span><span style="color: #ffd700">)</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"><span style="color: #179fff">}</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#5E6173;--shiki-dark:#5E6173">//</span><span class="space"> </span><span style="color:#5E6173;--shiki-dark:#5E6173">Use</span></span>
+<span class="line"><span style="color:#76C5A4;--shiki-dark:#76C5A4"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> privateRequest</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#88898F;--shiki-dark:#88898F"> (</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D">request</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> any</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> suffixUrl</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> string</span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span style="color:#FDAD5D;--shiki-dark:#FDAD5D"> configs</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">?:</span><span style="color:#51C7DA;--shiki-dark:#51C7DA"> any</span><span style="color:#88898F;--shiki-dark:#88898F">)</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7"> =></span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> Promise</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">any</span><span style="color:#88898F;--shiki-dark:#88898F">></span></span></code></span>privateRequest</span></span><span style="color: #ffd700">(</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#51C7DA;--shiki-dark:#51C7DA">const</span><span style="color:#AF98E6;--shiki-dark:#AF98E6"> request</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">:</span><span style="color:#76C5A4;--shiki-dark:#76C5A4"> RequestMethod</span><span style="color:#88898F;--shiki-dark:#88898F">&#x3C;</span><span style="color:#51C7DA;--shiki-dark:#51C7DA">false</span><span style="color:#88898F;--shiki-dark:#88898F">></span></span></code></span>request</span></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7"><span class="twoslash-hover"><span class="twoslash-popup-container ingore-twoslash"><code class="twoslash-popup-code"><span class="line"><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">RequestMethod</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#AF98E6;--shiki-dark:#AF98E6">false</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span><span style="color:#88898F;--shiki-dark:#88898F">.</span><span style="color:#D7D7D7;--shiki-dark:#D7D7D7">get: RequestMethod</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">&#x3C;</span><span style="color:#AF98E6;--shiki-dark:#AF98E6">false</span><span style="color:#FB7DA7;--shiki-dark:#FB7DA7">></span></span></code></span>get</span></span><span style="color:#88898F;--shiki-dark:#88898F">,</span><span class="space"> </span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color:#E3CF65;--shiki-dark:#E3CF65">/api/example</span><span style="color:#88898F;--shiki-dark:#88898F">'</span><span style="color: #ffd700">)</span><span style="color:#88898F;--shiki-dark:#88898F">;</span></span></code></pre>
+
+    <span class="code-blocks-lang">ts</span>
+    <button class="btn-copy">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#555555" d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm0-2h9V4H9zm-4 6q-.825 0-1.412-.587T3 20V7q0-.425.288-.712T4 6q.425 0 .713.288T5 7v13h10q.425 0 .713.288T16 21q0 .425-.288.713T15 22zm4-6V4z"/></svg>
+    </button>
+  </div>
+</div>
+<h2 class="heading-anchor" id="compare"><a class="anchor" href="#compare">#</a>Compare</h2>
+<ul>
+<li>TokenManager</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hunghg255/token-manager/main/assets/token-manager.gif" alt="Token manager" /></p>
+<ul>
+<li>Axios Interceptor</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/hunghg255/token-manager/main/assets/axios.gif" alt="Token manager" /></p>
+  </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function getTextExcept(element, exclude) {
+    return worker(element);
+
+    function worker(node, text = '') {
+      // @ts-ignore
+      if (node.nodeType === Node.TEXT_NODE) {
+        text += node.nodeValue;
+        // @ts-ignore
+      } else if (node.nodeType === Node.ELEMENT_NODE && exclude && !node.matches(exclude)) {
+        for (const child of node.childNodes) {
+          text = worker(child, text);
+        }
+      }
+      return text;
+    }
+  }
+
+  const copyContent = async (text) => {
+    try {
+      // @ts-ignore
+      await navigator.clipboard.writeText(text);
+    } catch (error) {
+      // @ts-ignore
+      console.error('Failed to copy:', error);
+    }
+  };
+
+  const eleCopy = document.querySelectorAll('.markdown-it-code-copy');
+
+  if (eleCopy?.length) {
+    eleCopy.forEach((el) => {
+      const btn = el.querySelector('.btn-copy');
+      btn.addEventListener('click', () => {
+        const content = getTextExcept(el.querySelector('pre'), '.ingore-twoslash');
+
+        copyContent(content);
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#6bbd71" d="M9 16.17L4.83 12l-1.42 1.41L9 19L21 7l-1.41-1.41z"/></svg>`;
+        const t = setTimeout(() => {
+          btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="#555555" d="M9 18q-.825 0-1.412-.587T7 16V4q0-.825.588-1.412T9 2h9q.825 0 1.413.588T20 4v12q0 .825-.587 1.413T18 18zm0-2h9V4H9zm-4 6q-.825 0-1.412-.587T3 20V7q0-.425.288-.712T4 6q.425 0 .713.288T5 7v13h10q.425 0 .713.288T16 21q0 .425-.288.713T15 22zm4-6V4z"/></svg>`;
+          clearTimeout(t);
+        }, 1200);
+      });
+    });
+  }
+
+  const eleCodeGroups = document.querySelectorAll('.markdown-code-group');
+
+  const removeCodeBlockClass = (el) => {
+    const codeBlocks = el.querySelectorAll('.code-blocks-group');
+    codeBlocks.forEach((el) => {
+      el.classList.remove('active');
+    });
+  };
+
+  const removeTabClass = (el) => {
+    const codeBlocks = el.querySelectorAll('.markdown-group-tab-item');
+    codeBlocks.forEach((el) => {
+      el.classList.remove('active');
+    });
+  };
+
+  const initCodeGroupActive = (el) => {
+    const tabActive = el.querySelector('.markdown-group-tab-item.active');
+    const dataCodeGroupActive = tabActive?.dataset.codeGroup;
+
+    const codeActive = el.querySelector(`.code-blocks-group.${dataCodeGroupActive}`);
+
+    if (codeActive) {
+      codeActive.classList.add('active');
+    }
+  };
+
+  if (eleCodeGroups?.length) {
+    eleCodeGroups.forEach((el) => {
+      const btns = el.querySelectorAll('.markdown-group-tab-item');
+
+      initCodeGroupActive(el);
+
+      btns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const dataCodeGroup = btn.dataset.codeGroup;
+
+          removeCodeBlockClass(el);
+          removeTabClass(el);
+
+          const code = el.querySelector(`.code-blocks-group.${dataCodeGroup}`);
+          code.classList.add('active');
+          btn.classList.add('active');
+        });
+      });
+    });
+  }
+
+
+
+}, false);
+</script>
+
+<script type="module" defer>
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+
+  const mermaidElement = document.querySelectorAll('.markdown-it-mermaid');
+
+      if (mermaidElement?.length) {
+        mermaidElement.forEach(async (el) => {
+          const content = el?.textContent;
+          if (content) {
+            const type = mermaid.detectType(content);
+            const { svg } = await mermaid.render(type, content);
+            el.innerHTML = svg;
+            el.classList.remove('opacity-0');
+          }
+        });
+      }
+</script>
+<script type="module" defer>
+import { createTooltip, recomputeAllPoppers } from 'https://cdn.jsdelivr.net/npm/floating-vue/dist/floating-vue.mjs';
+
+      const eleTwoslash = document.querySelectorAll(
+        '.twoslash-hover:not(.twoslash-query-presisted)',
+      );
+      const eleTwoslashCursor = document.querySelectorAll('.twoslash-completion-cursor');
+      const eleTwoslashPersisted = document.querySelectorAll('.twoslash-query-presisted');
+
+      if (typeof window !== 'undefined') {
+        // Recompute poppers when clicking on a tab
+        window.addEventListener(
+          'click',
+          (e) => {
+            // const path = e.composedPath();
+            // if (
+            //   path.some(
+            //     (el: any) =>
+            //       el?.classList?.contains?.('vp-code-group') || el?.classList?.contains?.('tabs'),
+            //   )
+            // )
+            //   recomputeAllPoppers();
+            recomputeAllPoppers();
+          },
+          { passive: true },
+        );
+      }
+
+      const isMobile =
+        typeof navigator !== 'undefined' &&
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      if (eleTwoslash?.length) {
+        eleTwoslash.forEach((el) => {
+          const twpslashEle = el.querySelector('.twoslash-popup-container');
+
+          const tooltip = createTooltip(
+            el,
+            {
+              content: twpslashEle.outerHTML,
+              html: true,
+              triggers: isMobile ? ['touch'] : ['hover', 'touch'],
+              popperTriggers: isMobile ? ['touch'] : ['hover', 'touch'],
+              placement: 'bottom-start',
+              overflowPadding: 10,
+              delay: 0,
+              handleResize: false,
+              autoHide: true,
+              instantMove: true,
+              flip: false,
+              arrowPadding: 8,
+              autoBoundaryMaxSize: true,
+              popperClass: 'v-popper--theme-twoslash v-popper--theme-dropdown twoslash-floating',
+            },
+            {},
+          );
+        });
+      }
+      if (eleTwoslashCursor?.length) {
+        eleTwoslashCursor.forEach((el) => {
+          const twpslashEle = el.querySelector('.twoslash-completion-list');
+
+          const tooltip = createTooltip(
+            el,
+            {
+              content: twpslashEle.outerHTML,
+              html: true,
+              triggers: ['click'],
+              popperTriggers: ['click'],
+              placement: 'bottom-start',
+              autoHide: false,
+              distance: 0,
+              arrowOverflow: true,
+              popperClass:
+                'v-popper--theme-twoslash v-popper--theme-dropdown twoslash-floating twoslash-floating-show',
+            },
+            {},
+          );
+
+          tooltip.show();
+        });
+      }
+      if (eleTwoslashPersisted?.length) {
+        eleTwoslashPersisted.forEach((el) => {
+          const twpslashEle = el.querySelector('.twoslash-popup-container');
+
+          const tooltip = createTooltip(
+            el,
+            {
+              content: twpslashEle.outerHTML,
+              html: true,
+              triggers: ['click'],
+              popperTriggers: ['click'],
+              placement: 'bottom-start',
+              autoHide: false,
+              popperClass: 'v-popper--theme-twoslash v-popper--theme-dropdown twoslash-floating',
+            },
+            {},
+          );
+
+          tooltip.show();
+        });
+      }
+</script>
+</body>
+</html>

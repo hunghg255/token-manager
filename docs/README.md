@@ -4,7 +4,7 @@
 </p>
 
 <p align="center">
-  This package help you do refresh token brainlessly. Super easy to use
+    This package help you do refresh token brainlessly. Super easy to use
 </p>
 
 <p align="center">
@@ -19,23 +19,27 @@
 
 - [Playground Stackblitz](https://stackblitz.com/edit/react-ts-mdxcmx?file=App.tsx)
 
-- [Documentation](https://brainless-token-manager.surge.sh)
-
 ## Install
 
-```bash
-# npm
-npm install brainless-token-manager@latest
+:::code-group-open
 
-# yarn
-yarn add brainless-token-manager@latest
-
-# pnpm
-pnpm i -D brainless-token-manager@latest
-
-# Bun
-bun install brainless-token-manager@latest
+```bash [npm]
+ npm install brainless-token-manager@latest
 ```
+
+```bash [yarn]
+ yarn add brainless-token-manager@latest
+```
+
+```bash [pnpm]
+ pnpm i -D brainless-token-manager@latest
+```
+
+```bash [bun]
+ bun install brainless-token-manager@latest
+```
+
+:::code-group-close
 
 ## Flow
 
