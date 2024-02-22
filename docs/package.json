@@ -5,7 +5,7 @@
     "gen-docs": "convert-markdown-to-html"
   },
   "devDependencies": {
-    "convert-markdown-to-html": "^0.0.32",
+    "convert-markdown-to-html": "^0.0.33",
     "typescript": "^4.9.5"
   },
   "dependencies": {

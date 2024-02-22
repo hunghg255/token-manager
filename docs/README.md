@@ -47,6 +47,8 @@
 - Valid token -> return token -> run as normal
 - Token in valid -> refresh token -> onRefreshToken success -> save token and refresh token to storage -> perform request
 
+![Demo](https://raw.githubusercontent.com/hunghg255/token-manager/main/img/image.png)
+
 ## API
 
 ```ts
@@ -67,10 +69,6 @@ interface TokenManagerContructor {
 
 const tokenManagerInstance = new TokenManager(options: TokenManagerContructor);
 ```
-
-## Flow
-
-![Demo](https://raw.githubusercontent.com/hunghg255/token-manager/main/img/image.png)
 
 ## Example with `umi-request`
 

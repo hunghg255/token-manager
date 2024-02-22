@@ -9,7 +9,7 @@
 
   <link rel="icon" type="image/png" href="https://avatars.githubusercontent.com/u/20696416?v=4" /><meta property="og:type" content="website" /><meta property="og:title" content="Brainless token manager" /><meta property="og:image" content="https://avatars.githubusercontent.com/u/20696416?v=4" /><meta property="og:url" content="https://github.com/namnh240795/token-manager" /><meta property="og:description" content="This package help you do refresh token brainlessly. Super easy to use" /><meta name="twitter:card" content="summary_large_image" /><meta name="theme-color" content="#7eaf90" />
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/convert-markdown-to-html@0.0.32/dist/style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/convert-markdown-to-html@0.0.33/dist/style.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-github-alerts/styles/github-colors-light.css">
 <link rel="stylesheet"
@@ -31,7 +31,7 @@
 
     <nav>
       <ul>
-        <li><a href="https://github.com/namnh240795/token-manager">
+        <li><a target="_blank" href="https://github.com/namnh240795/token-manager">
   <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
   </a></li>
       </ul>
@@ -137,6 +137,7 @@
 <li>Valid token -&gt; return token -&gt; run as normal</li>
 <li>Token in valid -&gt; refresh token -&gt; onRefreshToken success -&gt; save token and refresh token to storage -&gt; perform request</li>
 </ul>
+<p><img src="https://raw.githubusercontent.com/hunghg255/token-manager/main/img/image.png" alt="Demo" /></p>
 <h2 class="heading-anchor" id="api"><a class="anchor" href="#api">#</a>API</h2>
 
 <div class="code-blocks markdown-it-code-copy  code-blocks-group ts ">
@@ -166,8 +167,6 @@
     </button>
   </div>
 </div>
-<h2 class="heading-anchor" id="flow"><a class="anchor" href="#flow">#</a>Flow</h2>
-<p><img src="https://raw.githubusercontent.com/hunghg255/token-manager/main/img/image.png" alt="Demo" /></p>
 <h2 class="heading-anchor" id="example-with-umi-request"><a class="anchor" href="#example-with-umi-request">#</a>Example with <code>umi-request</code></h2>
 
 <div class="code-blocks markdown-it-code-copy  code-blocks-group ts ">
@@ -286,8 +285,8 @@
 
   <footer>
     <div>
-    <p>Released under the MIT License</p>
-    <p>Copyright © 2023-present Namnh240795</p>
+      <p>Released under the MIT License</p>
+      <p>Copyright © 2023-present Namnh240795</p>
     </div>
   </footer>
 
@@ -516,15 +515,38 @@ import { createTooltip, recomputeAllPoppers } from 'https://cdn.jsdelivr.net/npm
 <script>
 const asideContent = document.getElementById('asideContent');
 const headers = document.querySelectorAll('h2.heading-anchor');
+function updateLinks(visibleId, $links) {
+  $links.map(link => {
+    let href = link.getAttribute('href')
+    link.classList.remove('is-active')
+    if (href === visibleId) link.classList.add('is-active')
+  })
+}
 
-headers.forEach((header) => {
-  const id = header.id;
-  const text = header.textContent;
+if (headers.length) {
+  headers.forEach((header) => {
+    const id = header.id;
+    const text = header.textContent;
 
-  const li = document.createElement('li');
-  li.innerHTML = `<a href="#${id}">${text.slice(1)}</a>`;
-  asideContent.appendChild(li);
-});
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="#${id}">${text.slice(1)}</a>`;
+    asideContent.appendChild(li);
+  });
+
+  const $links = [...asideContent.querySelectorAll('a')]
+
+  const start = () => {
+    const visibleId = Array.from(headers).find(header => {
+      const rect = header.getBoundingClientRect()
+      return rect.top >= 20;
+    })?.id;
+
+    if (visibleId) updateLinks(`#${visibleId}`, $links)
+  }
+
+  window.addEventListener('scroll', start)
+  start();
+}
 </script>
 </body>
 </html>
