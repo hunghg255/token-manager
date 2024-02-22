@@ -2,10 +2,10 @@
   "name": "brainless-token-manager-docs",
   "description": "",
   "scripts": {
-    "gen-docs": "convert-markdown-to-html --i ./README.md --o ./index.html --t \"Brainless Token Manager Documentation\" --g \"https://github.com/namnh240795/token-manager\" --ts true"
+    "gen-docs": "convert-markdown-to-html"
   },
   "devDependencies": {
-    "convert-markdown-to-html": "^0.0.27",
+    "convert-markdown-to-html": "^0.0.32",
     "typescript": "^4.9.5"
   },
   "dependencies": {
